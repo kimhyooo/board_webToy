@@ -20,44 +20,44 @@ public class TodoServiceImpl implements TodoService{
 
     private final ModelMapper modelMapper;
 
-    @Override
-    public void register(TodoDTO todoDTO) {
+        @Override
+        public void register(TodoDTO todoDTO) {
 
-        log.info(modelMapper);
+            log.info(modelMapper);
 
-        TodoVO todoVO = modelMapper.map(todoDTO, TodoVO.class );
+            TodoVO todoVO = modelMapper.map(todoDTO, TodoVO.class );
 
-        log.info(todoVO);
+            log.info(todoVO);
 
-        todoMapper.insert(todoVO);
+            todoMapper.insert(todoVO);
+        }
+
+        @Override
+        public List<TodoDTO> getAll() {
+
+            List<TodoDTO> dtoList = todoMapper.selectAll().stream()
+                    .map(vo -> modelMapper.map(vo, TodoDTO.class))
+                    .collect(Collectors.toList());
+
+            return dtoList;
+        }
+
+        @Override
+        public TodoDTO getOne(Long tno) {
+
+            TodoVO todoVO = todoMapper.selectOne(tno);
+
+            TodoDTO todoDTO = modelMapper.map(todoVO, TodoDTO.class);
+
+        return todoDTO;
     }
 
     @Override
-    public List<TodoDTO> getAll() {
+    public void remove(Long tno) {
 
-        List<TodoDTO> dtoList = todoMapper.selectAll().stream()
-                .map(vo -> modelMapper.map(vo, TodoDTO.class))
-                .collect(Collectors.toList());
+        todoMapper.delete(tno);
 
-        return dtoList;
     }
-
-//    @Override
-//    public TodoDTO getOne(Long tno) {
-//
-//        TodoVO todoVO = todoMapper.selectOne(tno);
-//
-//        TodoDTO todoDTO = modelMapper.map(todoVO, TodoDTO.class);
-//
-//        return todoDTO;
-//    }
-//
-//    @Override
-//    public void remove(Long tno) {
-//
-//        todoMapper.delete(tno);
-//
-//    }
 //
 //    @Override
 //    public void modify(TodoDTO todoDTO) {
