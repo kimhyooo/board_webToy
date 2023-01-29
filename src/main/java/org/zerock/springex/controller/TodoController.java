@@ -26,6 +26,7 @@ public class TodoController {
     @RequestMapping("/list")
     public void list(Model model){
         log.info("todo list...");
+        model.addAttribute("dtoList", todoService.getAll());
     }
 
     @GetMapping("/register")
@@ -41,10 +42,13 @@ public class TodoController {
 
         if(bindingResult.hasErrors()){
             log.info("has errors.....");
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/todo/register";
+//            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "/todo/register";
         }
         log.info(todoDTO);
+
+        todoService.register(todoDTO);
+
         return "redirect:/todo/list";
     }
 }
